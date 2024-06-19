@@ -1,38 +1,89 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { DefaultStyles } from "../../DefaultStyles";
 import Touch from "../../Components/Touch";
 
 type Props = {};
 
+const Page = {
+  Welcome: {
+    title: "Welcome To ChatApp",
+    text: "Connect to your friends easily and chat with them",
+    url: "https://static-00.iconduck.com/assets.00/chat-icon-1024x1024-o88plv3x.png"
+  },
+  GroupChat: {
+    title: "Make a Group Chat",
+    text: "Make group and easily chat with all friends whenever you want",
+    url: "https://herobot.app/wp-content/uploads/2022/11/11-Reasons-Why-A-Chat-Application-Is-Great-For-Business_1.jpg"
+  },
+  Call: {
+    title: "Audio and Video Call",
+    text: "Do Audio and Video call easily and talk with your friends anywhere",
+    url: "https://www.searchenginejournal.com/wp-content/uploads/2019/11/8-superstar-video-conferencing-chat-apps-for-business-5de073204c94e.png"
+  }
+};
+
+const Pages = {
+  Welcome: "Welcome",
+  GroupChat: "GroupChat",
+  Call: "Call"
+} as const;
+
+type PagesType = keyof typeof Pages;
+
+const PageNames = ["Welcome", "GroupChat", "Call"];
+
 const Info = (props: Props) => {
+  const [currentPage, setCurrentPage] = useState<PagesType>("Welcome");
+
+  function changePage() {
+    currentPage === "Welcome"
+      ? setCurrentPage("GroupChat")
+      : setCurrentPage("Call");
+  }
+
   return (
     <View style={DefaultStyles.container}>
       <Image
         style={styles.Image}
         source={{
-          uri: "https://static-00.iconduck.com/assets.00/chat-icon-1024x1024-o88plv3x.png"
+          uri: Page[currentPage].url
         }}
       />
       <View style={styles.BottomView}>
         <Text style={[DefaultStyles.Title, styles.TitlePadd]}>
-          Welcome To ChatApp
+          {Page[currentPage].title}
         </Text>
         <Text style={[DefaultStyles.Text, styles.TextPadd]}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint,
-          suscipit.
+          {Page[currentPage].text}
         </Text>
         {/* Navigation Dots */}
         <View style={styles.InfoNavDotsContainer}>
-          <View style={styles.InfoNavDotActive}></View>
-          <View style={styles.InfoNavDot}></View>
-          <View style={styles.InfoNavDot}></View>
+          {PageNames.map((pageName, index) => (
+            <View
+              key={index}
+              style={
+                pageName === currentPage
+                  ? styles.InfoNavDotActive
+                  : styles.InfoNavDot
+              }
+            ></View>
+          ))}
         </View>
         {/* Navigation Dots */}
         <View style={styles.InfoNavTextContainer}>
-          <Touch style={styles.InfoNavText}>Prev</Touch>
-          <Touch style={styles.InfoNavText}>Skip</Touch>
-          <Touch style={styles.InfoNavText}>Next</Touch>
+          {/* <Touch onPress={() => changePage()} style={styles.InfoNavText}>
+            Prev
+          </Touch> */}
+          <Touch
+            onPress={currentPage === "Call" ? () => null : changePage}
+            style={styles.InfoNavText}
+          >
+            Skip
+          </Touch>
+          <Touch onPress={() => changePage()} style={styles.InfoNavText}>
+            Next
+          </Touch>
         </View>
       </View>
     </View>
@@ -59,7 +110,8 @@ const styles = StyleSheet.create({
     paddingVertical: 30
   },
   TextPadd: {
-    paddingBottom: 20
+    paddingBottom: 40,
+    paddingHorizontal: 10
   },
   InfoNavDotsContainer: {
     flex: 0,
