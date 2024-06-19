@@ -13,9 +13,9 @@ export const DefaultStyles = StyleSheet.create({
   },
   Text: {
     fontWeight: "300",
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Arial",
-    color: "#fff",
+    color: "#bababa",
     textAlign: "center"
   }
 });

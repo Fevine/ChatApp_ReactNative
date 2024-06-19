@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 type Props = {
   children: ReactNode;
   style: Object;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 const Touch = (props: Props) => {
