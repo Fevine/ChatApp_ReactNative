@@ -2,6 +2,8 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { DefaultStyles } from "../../DefaultStyles";
 import Touch from "../../Components/Touch";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../Types/navigation";
 
 type Props = {};
 
@@ -34,12 +36,18 @@ type PagesType = keyof typeof Pages;
 const PageNames = ["Welcome", "GroupChat", "Call"];
 
 const Info = (props: Props) => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   const [currentPage, setCurrentPage] = useState<PagesType>("Welcome");
 
   function changePage() {
     currentPage === "Welcome"
       ? setCurrentPage("GroupChat")
       : setCurrentPage("Call");
+  }
+
+  function navigateToAuth() {
+    navigation.navigate("Register");
   }
 
   return (
@@ -72,13 +80,7 @@ const Info = (props: Props) => {
         </View>
         {/* Navigation Dots */}
         <View style={styles.InfoNavTextContainer}>
-          {/* <Touch onPress={() => changePage()} style={styles.InfoNavText}>
-            Prev
-          </Touch> */}
-          <Touch
-            onPress={currentPage === "Call" ? () => null : changePage}
-            style={styles.InfoNavText}
-          >
+          <Touch onPress={() => navigateToAuth()} style={styles.InfoNavText}>
             Skip
           </Touch>
           <Touch onPress={() => changePage()} style={styles.InfoNavText}>
